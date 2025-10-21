@@ -1,0 +1,32 @@
+services:
+  # API Service (Node.js/Express)
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api:/app  # Mount host 'api' dir to container '/app' dir for hot-reloading
+    networks:
+      - mi-red
+    depends_on:
+      - mongo-db
+    restart: always
+
+  # MongoDB Service
+  mongo-db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db # Use a named volume for data persistence
+    networks:
+      - mi-red
+    restart: always
+
+networks:
+  mi-red:
+    driver: bridge
+
+volumes:
+  mongo-data:
+
